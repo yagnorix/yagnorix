@@ -12,7 +12,7 @@ Daily Motivation Popup
 - Multi-user support, only depends on base.
 """,
     'author': 'yagnorix Technologies!',
-    'maintainer' : 'yagnorix Technologies!'
+    'maintainer' : 'yagnorix Technologies!',
     'license': 'LGPL-3',
     'depends': ['base', 'web'],
     'data': [
