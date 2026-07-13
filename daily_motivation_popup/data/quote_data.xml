@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="quote_1" model="motivation.quote">
+        <field name="text">The only way to do great work is to love what you do.</field>
+        <field name="author">Steve Jobs</field>
+    </record>
+
+    <record id="quote_2" model="motivation.quote">
+        <field name="text">Success is not final, failure is not fatal: it is the courage to continue that counts.</field>
+        <field name="author">Winston Churchill</field>
+    </record>
+
+    <record id="quote_3" model="motivation.quote">
+        <field name="text">Believe you can and you're halfway there.</field>
+        <field name="author">Theodore Roosevelt</field>
+    </record>
+
+    <record id="quote_4" model="motivation.quote">
+        <field name="text">Don't watch the clock; do what it does. Keep going.</field>
+        <field name="author">Sam Levenson</field>
+    </record>
+
+    <record id="quote_5" model="motivation.quote">
+        <field name="text">Small steps every day lead to big results.</field>
+        <field name="author">Unknown</field>
+    </record>
+
+</odoo>

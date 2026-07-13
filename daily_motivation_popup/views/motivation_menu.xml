@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_motivation_root"
+              name="Motivation"
+              sequence="100"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_motivation_quote"
+              name="Quotes"
+              parent="menu_motivation_root"
+              action="action_motivation_quote"
+              sequence="10"/>
+
+</odoo>

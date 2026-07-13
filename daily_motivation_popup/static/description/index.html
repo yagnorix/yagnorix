@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Daily Motivation Popup — Yagnorix</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root{
+    --bg-0:#0a0a0f;
+    --bg-1:#121319;
+    --bg-2:#181a22;
+    --card:#1c1e28;
+    --border:rgba(201,162,39,0.16);
+    --border-soft:rgba(245,241,230,0.07);
+    --gold:#c9a227;
+    --gold-light:#ecc768;
+    --gold-dim:#8a6f22;
+    --ivory:#f4efe1;
+    --muted:#989db0;
+    --muted-dim:#6d7285;
+    --radius:14px;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+
+  body{
+    background:var(--bg-0);
+    color:var(--ivory);
+    font-family:'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3{ font-family:'Fraunces', Georgia, serif; font-weight:600; letter-spacing:-0.01em; }
+
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--gold);
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .eyebrow::before{ content:''; width:16px; height:1px; background:var(--gold); display:inline-block; }
+
+  .wrap{ max-width:1180px; margin:0 auto; padding:0 32px; }
+  section{ padding:100px 0; position:relative; }
+
+  /* ============ HERO ============ */
+  .hero{
+    padding:120px 0 100px;
+    background:
+      radial-gradient(ellipse 900px 500px at 85% -10%, rgba(201,162,39,0.14), transparent 60%),
+      radial-gradient(ellipse 700px 400px at 0% 10%, rgba(201,162,39,0.06), transparent 60%),
+      var(--bg-0);
+    border-bottom:1px solid var(--border-soft);
+    overflow:hidden;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.05fr 0.95fr;
+    gap:64px;
+    align-items:center;
+  }
+  .hero h1{
+    font-size:52px;
+    line-height:1.08;
+    margin:22px 0 24px;
+    color:var(--ivory);
+  }
+  .hero h1 em{
+    font-style:italic;
+    color:var(--gold-light);
+    font-weight:500;
+  }
+  .hero p.lead{
+    font-size:17px;
+    color:var(--muted);
+    max-width:480px;
+    margin-bottom:34px;
+  }
+  .hero-cta{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom:36px; }
+  .btn{
+    font-family:'Manrope',sans-serif;
+    font-weight:700;
+    font-size:14.5px;
+    padding:14px 26px;
+    border-radius:9px;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-primary{
+    background:linear-gradient(135deg, var(--gold-light), var(--gold-dim));
+    color:#1a1305;
+    box-shadow:0 8px 24px rgba(201,162,39,0.25);
+  }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 12px 28px rgba(201,162,39,0.35); }
+  .btn-ghost{
+    border:1px solid var(--border-soft);
+    color:var(--ivory);
+    background:rgba(255,255,255,0.02);
+  }
+  .btn-ghost:hover{ border-color:var(--gold-dim); }
+
+  .trust-row{ display:flex; gap:28px; flex-wrap:wrap; }
+  .trust-item{ font-size:13px; color:var(--muted-dim); display:flex; align-items:center; gap:8px; }
+  .trust-item .dot{ width:6px; height:6px; border-radius:50%; background:var(--gold); flex:none; }
+
+  /* --- signature popup mockup --- */
+  .mock-stage{ position:relative; display:flex; justify-content:center; align-items:center; min-height:420px; }
+  .mock-glow{
+    position:absolute; width:340px; height:340px; border-radius:50%;
+    background:radial-gradient(circle, rgba(201,162,39,0.22), transparent 70%);
+    filter:blur(10px);
+  }
+  .popup-card{
+    position:relative;
+    width:340px;
+    background:linear-gradient(180deg, #21232e, #191b23);
+    border:1px solid var(--border);
+    border-radius:16px;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(201,162,39,0.05);
+    overflow:hidden;
+  }
+  .popup-chrome{
+    display:flex; align-items:center; gap:6px;
+    padding:12px 16px;
+    border-bottom:1px solid var(--border-soft);
+    background:rgba(255,255,255,0.015);
+  }
+  .popup-chrome span{ width:8px; height:8px; border-radius:50%; background:#3a3d4a; }
+  .popup-chrome .lbl{
+    margin-left:8px; font-family:'JetBrains Mono',monospace; font-size:10.5px;
+    color:var(--muted-dim); letter-spacing:.06em; text-transform:uppercase;
+  }
+  .popup-body{ padding:28px 26px 24px; text-align:center; }
+  .popup-date{
+    font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--gold);
+    letter-spacing:.1em; text-transform:uppercase; margin-bottom:18px;
+  }
+  .quote-mark{
+    font-family:'Fraunces',serif; font-size:44px; color:var(--gold-dim);
+    line-height:0.5; display:block; margin-bottom:6px;
+  }
+  .quote-stack{ position:relative; height:108px; }
+  .quote-stack p{
+    position:absolute; inset:0;
+    font-family:'Fraunces',serif; font-style:italic; font-size:19px; line-height:1.45;
+    color:var(--ivory); opacity:0;
+    animation:quoteCycle 12s infinite;
+  }
+  .quote-stack p:nth-child(1){ animation-delay:0s; }
+  .quote-stack p:nth-child(2){ animation-delay:4s; }
+  .quote-stack p:nth-child(3){ animation-delay:8s; }
+  @keyframes quoteCycle{
+    0%{ opacity:0; transform:translateY(4px); }
+    4%{ opacity:1; transform:translateY(0); }
+    28%{ opacity:1; }
+    33%{ opacity:0; }
+    100%{ opacity:0; }
+  }
+  .popup-author{
+    font-size:12.5px; color:var(--muted-dim); margin-top:12px; letter-spacing:.03em;
+  }
+  .popup-actions{
+    display:flex; gap:10px; padding:18px 26px 26px; border-top:1px solid var(--border-soft);
+  }
+  .popup-actions .pbtn{
+    flex:1; text-align:center; padding:9px; border-radius:7px; font-size:12.5px; font-weight:700;
+  }
+  .pbtn.on{ background:var(--gold); color:#1a1305; }
+  .pbtn.off{ border:1px solid var(--border-soft); color:var(--muted); }
+
+  /* ============ BANNER ============ */
+  .banner{
+    padding:0; background:var(--bg-1); border-bottom:1px solid var(--border-soft);
+  }
+  .banner-inner{
+    display:flex; align-items:center; justify-content:space-between; gap:24px;
+    padding:22px 0; flex-wrap:wrap;
+  }
+  .banner-text{ display:flex; align-items:center; gap:14px; }
+  .banner-badge{
+    font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.08em;
+    background:rgba(201,162,39,0.12); color:var(--gold-light); padding:6px 12px;
+    border-radius:20px; border:1px solid var(--border); text-transform:uppercase;
+  }
+  .banner-text p{ font-size:14.5px; color:var(--muted); }
+  .banner-text strong{ color:var(--ivory); }
+  .banner-versions{ display:flex; gap:8px; }
+  .ver-chip{
+    font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--muted);
+    border:1px solid var(--border-soft); padding:6px 12px; border-radius:7px;
+  }
+
+  /* frame for real screenshot/gif — swap src later */
+  .screen-frame{
+    margin-top:70px;
+    border-radius:18px;
+    border:1px solid var(--border);
+    background:linear-gradient(180deg, var(--bg-2), var(--bg-1));
+    padding:14px;
+    box-shadow:0 40px 80px -30px rgba(0,0,0,0.55);
+  }
+  .screen-frame .top{
+    display:flex; align-items:center; gap:6px; padding:6px 8px 16px;
+  }
+  .screen-frame .top span{ width:9px; height:9px; border-radius:50%; background:#2c2e39; }
+  .screen-frame .media{
+    aspect-ratio:16/8.5;
+    border-radius:10px;
+    background:
+      radial-gradient(ellipse 500px 260px at 30% 20%, rgba(201,162,39,0.10), transparent 60%),
+      repeating-linear-gradient(135deg, rgba(255,255,255,0.02) 0 2px, transparent 2px 26px),
+      var(--card);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--muted-dim); font-family:'JetBrains Mono',monospace; font-size:13px;
+    text-align:center; padding:20px;
+    border:1px dashed var(--border-soft);
+  }
+
+  /* ============ OVERVIEW / PROBLEM-SOLUTION ============ */
+  .section-head{ max-width:620px; margin-bottom:56px; }
+  .section-head h2{ font-size:36px; color:var(--ivory); margin-top:16px; }
+  .section-head p{ color:var(--muted); font-size:15.5px; margin-top:14px; }
+
+  .ps-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border-soft); border:1px solid var(--border-soft); border-radius:var(--radius); overflow:hidden; }
+  .ps-col{ background:var(--bg-1); padding:38px 36px; }
+  .ps-col.solution{ background:linear-gradient(180deg, rgba(201,162,39,0.05), transparent 40%), var(--bg-1); }
+  .ps-tag{ font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase; }
+  .ps-col.problem .ps-tag{ color:var(--muted-dim); }
+  .ps-col.solution .ps-tag{ color:var(--gold); }
+  .ps-col h3{ font-size:22px; margin:14px 0 18px; color:var(--ivory); font-weight:500; }
+  .ps-col ul{ list-style:none; }
+  .ps-col li{ font-size:14.5px; color:var(--muted); padding:9px 0; border-top:1px solid var(--border-soft); display:flex; gap:10px; }
+  .ps-col li:first-child{ border-top:none; }
+  .ps-col.problem li::before{ content:'—'; color:var(--muted-dim); }
+  .ps-col.solution li::before{ content:'"'; font-family:'Fraunces',serif; color:var(--gold); font-weight:700; }
+
+  /* ============ FEATURES ============ */
+  .feat-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border-soft); border:1px solid var(--border-soft); border-radius:var(--radius); overflow:hidden; }
+  .feat-card{ background:var(--bg-1); padding:34px 30px; transition:background .2s ease; }
+  .feat-card:hover{ background:var(--card); }
+  .feat-mark{ font-family:'Fraunces',serif; font-size:34px; color:var(--gold-dim); line-height:.4; display:block; margin-bottom:14px; }
+  .feat-card h3{ font-size:18px; color:var(--ivory); font-weight:500; margin-bottom:9px; }
+  .feat-card p{ font-size:13.8px; color:var(--muted); }
+
+  /* ============ BENEFITS ============ */
+  .benefits{ background:var(--bg-1); border-top:1px solid var(--border-soft); border-bottom:1px solid var(--border-soft); }
+  .ben-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:36px; margin-top:20px; }
+  .ben-item{ border-top:2px solid var(--gold-dim); padding-top:18px; }
+  .ben-num{ font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--gold); letter-spacing:.08em; }
+  .ben-item h3{ font-size:17px; color:var(--ivory); font-weight:500; margin:10px 0 8px; }
+  .ben-item p{ font-size:13.5px; color:var(--muted); }
+
+  @media (max-width:900px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .hero h1{ font-size:38px; }
+    .ps-grid, .feat-grid{ grid-template-columns:1fr; }
+    .ben-grid{ grid-template-columns:1fr 1fr; }
+    .wrap{ padding:0 20px; }
+    section{ padding:64px 0; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">Yagnorix · Odoo Employee Engagement</span>
+        <h1>Start every login<br>with a reason to <em>show up.</em></h1>
+        <p class="lead">Daily Motivation Popup delivers a fresh, hand-curated quote to every employee the moment they open Odoo — quietly building a culture of energy, focus and belonging, one login at a time.</p>
+        <div class="hero-cta">
+          <a href="#" class="btn btn-primary">Get This Module →</a>
+          <a href="#" class="btn btn-ghost">See It In Action</a>
+        </div>
+        <div class="trust-row">
+          <span class="trust-item"><span class="dot"></span>Odoo 19 Ready</span>
+          <span class="trust-item"><span class="dot"></span>Zero Config Setup</span>
+          <span class="trust-item"><span class="dot"></span>Free Lifetime Support</span>
+        </div>
+      </div>
+
+      <div class="mock-stage">
+        <div class="mock-glow"></div>
+        <div class="popup-card">
+          <div class="popup-chrome">
+            <span></span><span></span><span></span>
+            <span class="lbl">Daily Motivation</span>
+          </div>
+          <div class="popup-body">
+            <div class="popup-date">Monday · Week 24</div>
+            <span class="quote-mark">"</span>
+            <div class="quote-stack">
+              <p>Success begins with today's effort.</p>
+              <p>One small step today.</p>
+              <p>Great teams are built one focused morning at a time.</p>
+            </div>
+            <div class="popup-author">— Today's Reflection</div>
+          </div>
+          <div class="popup-actions">
+            <span class="pbtn on">Thanks, noted</span>
+            <span class="pbtn off">Snooze</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BANNER ============ -->
+  <section class="banner">
+    <div class="wrap banner-inner">
+      <div class="banner-text">
+        <span class="banner-badge">New Release</span>
+        <p><strong>v2.1</strong> adds category-based quote scheduling and department targeting.</p>
+      </div>
+      <div class="banner-versions">
+        <span class="ver-chip">Odoo 17</span>
+        <span class="ver-chip">Odoo 18</span>
+        <span class="ver-chip">Odoo 19</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SCREENSHOT / GIF PLACEHOLDER ============ -->
+  <section style="padding-top:70px; padding-bottom:0;">
+    <div class="wrap">
+      <div class="screen-frame">
+        <div class="top"><span></span><span></span><span></span></div>
+          <div class="media">
+            <div style="max-width:1600px;
+            margin:0 auto;
+            border-radius:16px;
+            overflow:hidden;
+            border:1px solid #ddd;
+            box-shadow:0 20px 60px rgba(0,0,0,.15);">
+
+          <img src="daily_motivation_popup_demo.gif"
+              alt="Daily Motivation Popup Demo"
+              style="width:100%;
+                      display:block;">
+
+</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WHY CHOOSE / PROBLEM vs SOLUTION ============ -->
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Why Choose This Module</span>
+        <h2>Motivation shouldn't be an afterthought.</h2>
+        <p>Most teams rely on posters, occasional emails or manager pep-talks. None of it happens where work actually starts — inside Odoo, every single day.</p>
+      </div>
+
+      <div class="ps-grid">
+        <div class="ps-col problem">
+          <span class="ps-tag">Without It</span>
+          <h3>The daily grind, unaddressed</h3>
+          <ul>
+            <li>Employees log in straight into task fatigue</li>
+            <li>Culture initiatives live outside the tools people use</li>
+            <li>Motivation depends on manager mood, not consistency</li>
+            <li>No easy way to reinforce company values day-to-day</li>
+          </ul>
+        </div>
+        <div class="ps-col solution">
+          <span class="ps-tag">With Daily Motivation Popup</span>
+          <h3>A one-line ritual, built in</h3>
+          <ul>
+            <li>A fresh quote greets every user automatically</li>
+            <li>Runs natively inside Odoo — no extra app to open</li>
+            <li>Admins control tone, frequency and audience</li>
+            <li>Values and energy reinforced with zero manual effort</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURE CARDS ============ -->
+  <section style="padding-top:20px;">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Feature Set</span>
+        <h2>Everything the ritual needs.</h2>
+      </div>
+
+      <div class="feat-grid">
+        <div class="feat-card">
+          <span class="feat-mark">"</span>
+          <h3>Curated Quote Library</h3>
+          <p>Ships with 300+ hand-picked quotes across leadership, sales, wellness and teamwork — fully editable.</p>
+        </div>
+        <div class="feat-card">
+          <span class="feat-mark">"</span>
+          <h3>Smart Scheduling</h3>
+          <p>Show once per day, per session, or on a custom recurrence — configurable from a simple settings screen.</p>
+        </div>
+        <div class="feat-card">
+          <span class="feat-mark">"</span>
+          <h3>Category Targeting</h3>
+          <p>Send sales quotes to the sales team, wellness reminders to everyone, leadership notes to managers only.</p>
+        </div>
+        <div class="feat-card">
+          <span class="feat-mark">"</span>
+          <h3>Branded Popup</h3>
+          <p>Match your company colours and logo so the popup feels like a native part of your Odoo instance.</p>
+        </div>
+        <div class="feat-card">
+          <span class="feat-mark">"</span>
+          <h3>Multi-Language</h3>
+          <p>Quotes and interface labels translate automatically using Odoo's built-in translation framework.</p>
+        </div>
+        <div class="feat-card">
+          <span class="feat-mark">"</span>
+          <h3>Multi-Company Support</h3>
+          <p>Run different quote sets, schedules and branding across every company in the same database.</p>
+        </div>
+        <div class="feat-card">
+          <span class="feat-mark">"</span>
+          <h3>Snooze &amp; Dismiss</h3>
+          <p>Employees can acknowledge or snooze the popup without it ever blocking their actual work.</p>
+        </div>
+        <div class="feat-card">
+          <span class="feat-mark">"</span>
+          <h3>Import Your Own Quotes</h3>
+          <p>Bulk-import your organisation's own values, mottos or leadership quotes via CSV in one click.</p>
+        </div>
+        <div class="feat-card">
+          <span class="feat-mark">"</span>
+          <h3>Lightweight by Design</h3>
+          <p>Adds negligible load time — the popup renders client-side with no impact on Odoo performance.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ KEY BENEFITS ============ -->
+  <section class="benefits">
+    <div class="wrap">
+      <div class="section-head" style="margin-bottom:0;">
+        <span class="eyebrow">Key Benefits</span>
+        <h2>Small habit. Real culture shift.</h2>
+      </div>
+      <div class="ben-grid">
+        <div class="ben-item">
+          <div class="ben-num">Retention</div>
+          <h3>Stronger daily engagement</h3>
+          <p>A tiny, positive moment at login compounds into a more engaged, present team.</p>
+        </div>
+        <div class="ben-item">
+          <div class="ben-num">Culture</div>
+          <h3>Values, reinforced daily</h3>
+          <p>Keep your mission and principles visible without another all-hands meeting.</p>
+        </div>
+        <div class="ben-item">
+          <div class="ben-num">Zero Effort</div>
+          <h3>Set once, runs forever</h3>
+          <p>Configure the schedule and audience once — the ritual runs itself from there.</p>
+        </div>
+        <div class="ben-item">
+          <div class="ben-num">Native Fit</div>
+          <h3>Feels like core Odoo</h3>
+          <p>No separate login, app or tab — it lives exactly where your team already works.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
